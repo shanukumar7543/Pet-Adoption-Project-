@@ -223,6 +223,32 @@
   border-radius: 10px;
 }
 
+/* Laptop/Tablet - Medium screens */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    padding: 30px 15px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 28px;
+  }
+
+  .application-card {
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+  }
+
+  .application-pet-info img,
+  .application-pet-info .no-image {
+    width: 80px;
+    height: 80px;
+  }
+
+  .pet-details h3 {
+    font-size: 18px;
+  }
+}
+
 @media (max-width: 968px) {
   .application-card {
     grid-template-columns: 1fr;
@@ -244,6 +270,51 @@
 }
 
 @media (max-width: 768px) {
+  .dashboard-container {
+    padding: 20px 10px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 24px;
+  }
+
+  .filter-tabs {
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .filter-tabs button {
+    padding: 8px 18px;
+    font-size: 14px;
+  }
+
+  .application-card {
+    padding: 20px 15px;
+  }
+
+  .application-pet-info {
+    gap: 15px;
+  }
+
+  .application-pet-info img,
+  .application-pet-info .no-image {
+    width: 70px;
+    height: 70px;
+  }
+
+  .pet-details h3 {
+    font-size: 16px;
+  }
+
+  .pet-details p {
+    font-size: 13px;
+  }
+
+  .status-badge {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
   .pagination {
     flex-direction: column;
     gap: 15px;
@@ -253,16 +324,98 @@
   .pagination-btn {
     width: 100% !important;
   }
+
+  .page-info {
+    font-size: 14px;
+  }
 }
 
 @media (max-width: 480px) {
+  .dashboard-container {
+    padding: 15px 5px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 22px;
+  }
+
+  .filter-tabs button {
+    padding: 8px 15px;
+    font-size: 13px;
+  }
+
+  .application-card {
+    padding: 15px 10px;
+    gap: 15px;
+  }
+
   .application-pet-info {
     flex-direction: column;
     text-align: center;
+    gap: 10px;
+  }
+
+  .application-pet-info img,
+  .application-pet-info .no-image {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+  }
+
+  .pet-details h3 {
+    font-size: 16px;
+  }
+
+  .pet-details p {
+    font-size: 12px;
+  }
+
+  .application-date {
+    font-size: 12px;
+  }
+
+  .status-badge {
+    font-size: 11px;
+    padding: 6px 10px;
+    margin: 0 auto;
   }
 
   .application-actions {
     flex-direction: column;
+    gap: 8px;
+  }
+
+  .application-actions button {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .no-applications p {
+    font-size: 16px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .dashboard-container {
+    padding: 10px 3px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 20px;
+  }
+
+  .filter-tabs button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .application-card {
+    padding: 12px 8px;
+  }
+
+  .pet-details h3 {
+    font-size: 15px;
   }
 }
 
