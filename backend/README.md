@@ -12,6 +12,7 @@ A comprehensive REST API for a pet adoption system built with Node.js, Express, 
 - **Pagination**: Efficient data pagination for large datasets
 - **Validation**: Request validation using express-validator
 - **Error Handling**: Centralized error handling middleware
+- **API Documentation**: Interactive Swagger/OpenAPI documentation
 
 ## Tech Stack
 
@@ -23,6 +24,7 @@ A comprehensive REST API for a pet adoption system built with Node.js, Express, 
 - **Validation**: express-validator
 - **File Upload**: Multer
 - **Image Hosting**: Cloudinary (optional)
+- **API Documentation**: Swagger/OpenAPI with swagger-jsdoc and swagger-ui-express
 
 ## Project Structure
 
@@ -30,7 +32,8 @@ A comprehensive REST API for a pet adoption system built with Node.js, Express, 
 backend/
 ├── config/
 │   ├── database.js          # MongoDB connection
-│   └── cloudinary.js         # Cloudinary configuration
+│   ├── cloudinary.js        # Cloudinary configuration
+│   └── swagger.js           # Swagger/OpenAPI configuration
 ├── controllers/
 │   ├── authController.js     # Authentication logic
 │   ├── petController.js      # Pet management logic
@@ -54,7 +57,8 @@ backend/
 ├── .env                     # Environment variables
 ├── .env.example            # Environment variables template
 ├── server.js               # Application entry point
-└── package.json            # Dependencies and scripts
+├── package.json            # Dependencies and scripts
+└── API_DOCUMENTATION.md    # Swagger documentation guide
 ```
 
 ## Installation
@@ -106,6 +110,11 @@ backend/
    ```
 
 ## API Endpoints
+
+For complete API documentation with interactive testing, visit:
+**http://localhost:5000/api-docs** (after starting the server)
+
+See [API_DOCUMENTATION.md](./API_DOCUMENTATION.md) for detailed documentation guide.
 
 ### Authentication (`/api/auth`)
 
@@ -309,10 +318,19 @@ npm run dev
 ## Testing
 
 You can test the API using:
+- **Swagger UI** (Interactive): http://localhost:5000/api-docs
 - Postman
 - cURL
 - Thunder Client (VS Code extension)
 - Any HTTP client
+
+### Quick Test with Swagger
+1. Start the server: `npm start`
+2. Open browser: http://localhost:5000/api-docs
+3. Click "Authorize" button
+4. Register/Login to get a JWT token
+5. Enter token in the format: `Bearer YOUR_TOKEN`
+6. Test any endpoint interactively
 
 ## License
 
