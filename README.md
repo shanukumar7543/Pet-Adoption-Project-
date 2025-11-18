@@ -52,6 +52,16 @@ This system enables users to browse pets available for adoption, submit adoption
 - **Pagination**: Efficient data loading
 - **Real-time Updates**: Status updates and notifications
 
+### 🔒 Security Features
+
+- **Secure Authentication**: JWT tokens stored in HTTP-only cookies (not sessionStorage/localStorage)
+- **No Client-Side Data Storage**: User data fetched from API using JWT, preventing data tampering
+- **Automatic Token Validation**: Tokens validated on app load, auto-logout on expiration
+- **Password Hashing**: bcrypt with salt rounds for secure password storage
+- **Protected Routes**: Middleware authentication for sensitive endpoints
+- **Role-Based Access Control**: Server-side role verification, not client-side
+- **Always Fresh Data**: User data always fetched from server, never stale cached data
+
 ## 🛠️ Tech Stack
 
 ### Backend
@@ -98,8 +108,3 @@ pet-ado-app/
 │   ├── .env                 # Environment variables
 │   └── package.json
 └── README.md
-```
-
-**Note**: This is a production-ready application with all essential features implemented. Make sure to configure environment variables properly before deployment and use strong secrets in production.
-
-# Pet-Adoption
