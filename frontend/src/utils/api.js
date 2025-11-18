@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { getAuthToken } from './cookieHelper';
 
 const API_URL = process.env.REACT_APP_API_URL;
 
@@ -9,9 +10,8 @@ const api = axios.create({
 
 // Add auth token to requests
 api.interceptors.request.use((config) => {
-  const userInfo = localStorage.getItem('userInfo');
-  if (userInfo) {
-    const { token } = JSON.parse(userInfo);
+  const token = getAuthToken();
+  if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

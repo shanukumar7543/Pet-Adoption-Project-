@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { getAuthToken, setAuthToken, removeAuthToken } from '../utils/cookieHelper';
+import api from '../utils/api';
 
 const AuthContext = createContext();
 
@@ -15,13 +17,38 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    // Check if user is logged in
-    const userInfo = localStorage.getItem('userInfo');
-    if (userInfo) {
-      setUser(JSON.parse(userInfo));
+  // Fetch user data from API using JWT token
+  const fetchUserData = async () => {
+    try {
+      const { data } = await api.get('/auth/me');
+      setUser(data.data);
+      return data.data;
+    } catch (error) {
+      console.error('Error fetching user data:', error);
+      // If token is invalid or expired, clear authentication
+      removeAuthToken();
+      setUser(null);
+      throw error;
     }
-    setLoading(false);
+  };
+
+  useEffect(() => {
+    // Check if user is logged in by verifying token and fetching user data
+    const initAuth = async () => {
+      const token = getAuthToken();
+      
+      if (token) {
+        try {
+          await fetchUserData();
+        } catch (error) {
+          // Token is invalid or expired
+          console.error('Authentication failed:', error);
+        }
+      }
+      setLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   const register = async (userData) => {
@@ -30,8 +57,16 @@ export const AuthProvider = ({ children }) => {
         `${process.env.REACT_APP_API_URL}/auth/register`,
         userData
       );
-      localStorage.setItem('userInfo', JSON.stringify(data.data));
-      setUser(data.data);
+      
+      // Extract token from response
+      const { token } = data.data;
+      
+      // Store token in cookie (persistent)
+      setAuthToken(token, 7);
+      
+      // Fetch user data from API using the token
+      await fetchUserData();
+      
       return { success: true };
     } catch (error) {
       return {
@@ -47,8 +82,16 @@ export const AuthProvider = ({ children }) => {
         `${process.env.REACT_APP_API_URL}/auth/login`,
         { email, password }
       );
-      localStorage.setItem('userInfo', JSON.stringify(data.data));
-      setUser(data.data);
+      
+      // Extract token from response
+      const { token } = data.data;
+      
+      // Store token in cookie (persistent)
+      setAuthToken(token, 7);
+      
+      // Fetch user data from API using the token
+      await fetchUserData();
+      
       return { success: true };
     } catch (error) {
       return {
@@ -59,14 +102,29 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = () => {
-    localStorage.removeItem('userInfo');
+    // Remove token from cookie
+    removeAuthToken();
+    
+    // Clear user state
     setUser(null);
   };
 
-  const updateUser = (updatedUser) => {
-    const updatedUserInfo = { ...user, ...updatedUser };
-    localStorage.setItem('userInfo', JSON.stringify(updatedUserInfo));
-    setUser(updatedUserInfo);
+  const updateUser = async (updatedUser) => {
+    try {
+      // Update user profile on the server
+      const { data } = await api.put('/auth/profile', updatedUser);
+      
+      // Fetch fresh user data from API
+      await fetchUserData();
+      
+      return { success: true };
+    } catch (error) {
+      console.error('Error updating user:', error);
+      return {
+        success: false,
+        message: error.response?.data?.message || 'Failed to update profile'
+      };
+    }
   };
 
   const value = {
@@ -75,7 +133,8 @@ export const AuthProvider = ({ children }) => {
     register,
     login,
     logout,
-    updateUser
+    updateUser,
+    fetchUserData
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

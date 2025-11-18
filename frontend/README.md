@@ -130,12 +130,16 @@ Launches the test runner
 
 ## Key Features Implementation
 
-### Authentication
-- JWT-based authentication
-- Persistent login using localStorage
-- Protected routes for authenticated users
-- Admin-only routes for administrative functions
-- Automatic token inclusion in API requests
+### Authentication & Security
+- **JWT-based Authentication**: Secure token-based authentication system
+- **HTTP-Only Cookies**: JWT tokens stored in cookies (not sessionStorage/localStorage)
+- **No Client-Side Data Storage**: User data fetched from API using JWT, preventing tampering
+- **Automatic Token Validation**: Tokens validated on app load, auto-logout on expiration
+- **Protected Routes**: Route guards for authenticated users
+- **Admin-Only Routes**: Separate route protection for administrative functions
+- **Automatic Token Inclusion**: JWT automatically added to all API requests via interceptor
+- **Role-Based Access Control**: Server-side role verification, not client-side
+- **Always Fresh Data**: User data always fetched from server, never stale cached data
 
 ### Pet Browsing
 - Grid layout with responsive design
@@ -190,13 +194,14 @@ The application uses a modern, gradient-based design with:
 ## State Management
 
 ### AuthContext
-Provides global authentication state:
-- `user`: Current user object
-- `loading`: Loading state
-- `register()`: Register new user
-- `login()`: Login user
-- `logout()`: Logout user
-- `updateUser()`: Update user info
+Provides global authentication state with secure data management:
+- `user`: Current user object (fetched from API, never stored in browser storage)
+- `loading`: Loading state during authentication checks
+- `register()`: Register new user and fetch user data from API
+- `login()`: Login user and fetch user data from API
+- `logout()`: Logout user and clear authentication token
+- `updateUser()`: Update user profile on server and refetch fresh data (async)
+- `fetchUserData()`: Fetch current user data from API using JWT token
 
 ## API Integration
 
@@ -316,9 +321,10 @@ Or register normally and update via backend.
 - Verify CORS is enabled on backend
 
 ### Authentication Issues
-- Clear localStorage
-- Check token expiration
+- Clear browser cookies for the domain
+- Check token expiration (tokens validated on each app load)
 - Verify JWT_SECRET matches backend
+- Check browser console for API errors
 
 ### Build Issues
 - Delete node_modules and reinstall
